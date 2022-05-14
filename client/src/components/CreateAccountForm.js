@@ -26,6 +26,7 @@ export default function CreateAccountForm({ number, login }) {
       .then((data) => {
         if (data.value) {
           // login
+          login(password);
           setAlertText("Creating account succeeded");
         } else {
           throw data.reason;
