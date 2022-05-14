@@ -1,7 +1,9 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const MongoStore = require("connect-mongo");
 
+// setup connections to database and session store
 const url =
+  process.env.MONGO_URL ||
   "mongodb+srv://cluster0.slxul.mongodb.net/myFirstDatabase?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority";
 const credentials = __dirname + "/ssl/ca.pem";
 const options = {
@@ -21,10 +23,11 @@ async function connect() {
   await client.connect();
   // Establish and verify connection
   await client.db("admin").command({ ping: 1 });
-  console.log("Connected successfully to server");
+  console.log("Connected successfully to database");
 }
 connect().catch((err) => console.log(err));
 
+// functions to edit/read important information from the database
 exports.hasAccount = async function (number) {
   const numberdb = client.db("testDB").collection("Numbers");
   const record = await numberdb.findOne({ number: number });

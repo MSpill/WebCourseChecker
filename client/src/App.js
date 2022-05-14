@@ -42,24 +42,28 @@ export default function App() {
       <div className="header">
         <h1>Beta Course Checker</h1>
       </div>
-      <div className="contents">
-        {loggedIn ? (
-          <CourseAdder />
-        ) : creatingAccount ? (
-          <CreateAccountForm
-            number={number}
-            login={login}
-            setCreatingAccount={setCreatingAccount}
-          />
-        ) : (
-          <LoginForm
-            number={number}
-            login={login}
-            setNumber={setNumber}
-            setCreatingAccount={setCreatingAccount}
-          />
-        )}
-      </div>
+      {loggedIn === undefined ? (
+        <></>
+      ) : (
+        <div className="contents">
+          {loggedIn ? (
+            <CourseAdder />
+          ) : creatingAccount ? (
+            <CreateAccountForm
+              number={number}
+              login={login}
+              setCreatingAccount={setCreatingAccount}
+            />
+          ) : (
+            <LoginForm
+              number={number}
+              login={login}
+              setNumber={setNumber}
+              setCreatingAccount={setCreatingAccount}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }

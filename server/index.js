@@ -3,13 +3,15 @@ const session = require("express-session");
 const db = require("./mongo");
 const passwords = require("./passwords");
 
+// general setup
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(
   session({
-    secret: "obungamungo",
+    secret: process.env.SESSION_SECRET || "obungamungo",
     store: db.sessionstore,
     saveUninitialized: false,
     resave: false,
@@ -24,6 +26,9 @@ if (app.get("env") === "production") {
   sess.cookie.secure = true; // serve secure cookies
 }
 
+// checks a given number-password pair against the database's salted hash
+// if the credentials are correct, sets the user's session loggedIn to true
+// returns whether the login succeeded as JSON
 app.post("/login", (req, res) => {
   db.getAccount(req.body.number)
     .then((acct) => passwords.compare(req.body.password, acct.hash))
@@ -38,6 +43,8 @@ app.post("/login", (req, res) => {
     .catch((reason) => res.json({ value: false, reason: reason }));
 });
 
+// returns whether the agent which makes the request is logged in by checking its session
+// this is kinda necessary since the frontend is a single-page app
 app.post("/checkLogin", (req, res) => {
   res.json({
     value:
@@ -47,12 +54,16 @@ app.post("/checkLogin", (req, res) => {
   });
 });
 
+// returns whether the given number has a password associated with it yet
+// returns a boolean or "no record" if the given number is not on the list of approved users
 app.post("/hasAccount", (req, res) => {
   db.hasAccount(req.body.number).then((value) => {
     res.json({ value: value });
   });
 });
 
+// creates an account associated with the given number after checking that it doesn't already exist
+// and is on the list of approved users
 app.post("/createAccount", (req, res) => {
   db.hasAccount(req.body.number)
     .then((value) => {
