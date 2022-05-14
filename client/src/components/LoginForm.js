@@ -6,11 +6,12 @@ export default function LoginForm({
   setCreatingAccount,
   login,
 }) {
-  const [notAssociated, setNotAssociated] = useState(false);
+  const [alertText, setAlertText] = useState("");
   const [enterPassword, setEnterPassword] = useState(false);
   const [password, setPassword] = useState("");
 
   function submitNumber(e) {
+    setAlertText("");
     // prevent page from refreshing
     e.preventDefault();
 
@@ -23,9 +24,11 @@ export default function LoginForm({
       .then((res) => res.json())
       .then((data) => {
         if (data.value === "no record") {
-          setNotAssociated(true);
+          setAlertText(
+            "This number is not permitted to sign up for the course checker."
+          );
         } else {
-          setNotAssociated(false);
+          setAlertText("");
           if (data.value) {
             setEnterPassword(true);
           } else {
@@ -48,6 +51,7 @@ export default function LoginForm({
           <label>Password</label>
           <input
             type="text"
+            className="form-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -58,20 +62,20 @@ export default function LoginForm({
           <label>Phone Number</label>
           <input
             type="text"
+            className="form-input"
             value={number}
             onChange={(e) => setNumber(e.target.value)}
           />
-          <input type="submit" />
+          <input
+            className="btn"
+            type="submit"
+            value="Continue"
+            style={{ backgroundColor: "green" }}
+          />
         </form>
       )}
 
-      {notAssociated ? (
-        <div className="error">
-          This number is not permitted to sign up for the course checker
-        </div>
-      ) : (
-        <></>
-      )}
+      {alertText ? <div className="error">{alertText}</div> : <></>}
     </div>
   );
 }

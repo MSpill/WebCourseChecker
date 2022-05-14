@@ -37,22 +37,30 @@ export default function CreateAccountForm({ number, login }) {
 
   return (
     <div>
+      <h2>Create Password</h2>
+      <p>This will be used to access the system from now on.</p>
       <form onSubmit={createAccount}>
         <label>Password</label>
         <input
           type="text"
+          className="form-input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <label>Confirm Password</label>
         <input
           type="text"
+          className="form-input"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <input type="submit" />
+        <input
+          className="btn"
+          style={{ backgroundColor: "green" }}
+          type="submit"
+        />
       </form>
-      {alertText === "" ? <></> : <div>{alertText}</div>}
+      {alertText ? <div className="error">{alertText}</div> : <></>}
     </div>
   );
 }
