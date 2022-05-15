@@ -88,7 +88,7 @@ form {
   flex-direction: column;
 }
 
-.courseText > h3,
+.courseText > h4,
 p {
   margin: 0px;
 }
@@ -98,6 +98,7 @@ p {
   flex-direction: row;
   margin-top: auto;
   margin-bottom: auto;
+  margin-left: 20px;
 }
 
 .toggleGroupButton {
@@ -106,6 +107,7 @@ p {
   padding: 3px 10px;
   background-color: white;
   outline: 1px solid gray;
+  outline-offset: -0.5px;
   height: 30px;
   line-height: 30px;
   text-align: center;
@@ -120,4 +122,5 @@ p {
   font-size: 12px;
   cursor: pointer;
   user-select: none;
+  white-space: nowrap;
 }

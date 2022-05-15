@@ -8,7 +8,7 @@ export default function CourseAdder({ setLoggedIn }) {
 
   const courses = [
     {
-      name: "DN",
+      name: "Computer Org & Program - Sec A01 Plus some other stuff",
       CRN: 123,
     },
     {
