@@ -1,8 +1,11 @@
+import { useState } from "react";
 import AddCourseForm from "./adder/AddCourseForm";
 import AdderHeader from "./adder/AdderHeader";
 import CourseList from "./adder/CourseList";
 
-export default function CourseAdder() {
+export default function CourseAdder({ setLoggedIn }) {
+  const [formOpen, setFormOpen] = useState(false);
+
   const courses = [
     {
       name: "DN",
@@ -14,11 +17,21 @@ export default function CourseAdder() {
     },
   ];
 
+  function logout() {
+    fetch("/logout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }).then(() => setLoggedIn(false));
+  }
+
   return (
     <div className="adderContainer">
-      <AdderHeader />
-      <AddCourseForm />
+      <AdderHeader formOpen={formOpen} setFormOpen={setFormOpen} />
+      {formOpen ? <AddCourseForm /> : <></>}
       <CourseList courses={courses} />
+      <button onClick={logout} className="btn">
+        Logout
+      </button>
     </div>
   );
 }

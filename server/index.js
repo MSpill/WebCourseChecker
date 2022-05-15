@@ -4,7 +4,6 @@ const db = require("./mongo");
 const passwords = require("./passwords");
 
 // general setup
-
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -21,11 +20,6 @@ app.use(
   })
 );
 
-if (app.get("env") === "production") {
-  app.set("trust proxy", 1); // trust first proxy
-  sess.cookie.secure = true; // serve secure cookies
-}
-
 // checks a given number-password pair against the database's salted hash
 // if the credentials are correct, sets the user's session loggedIn to true
 // returns whether the login succeeded as JSON
@@ -41,6 +35,13 @@ app.post("/login", (req, res) => {
       }
     })
     .catch((reason) => res.json({ value: false, reason: reason }));
+});
+
+app.post("/logout", (req, res) => {
+  if (req.session.loggedIn) {
+    req.session.loggedIn = false;
+    res.json({ value: true });
+  }
 });
 
 // returns whether the agent which makes the request is logged in by checking its session
@@ -62,7 +63,7 @@ app.post("/hasAccount", (req, res) => {
   });
 });
 
-// creates an account associated with the given number after checking that it doesn't already exist
+// creates an account associated with the given phone number after checking that it doesn't already exist
 // and is on the list of approved users
 app.post("/createAccount", (req, res) => {
   db.hasAccount(req.body.number)

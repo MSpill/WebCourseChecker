@@ -20,7 +20,7 @@ export default function App() {
     }
   });
 
-  function login(password) {
+  function login(password, callback) {
     fetch("/login", {
       method: "POST",
       body: JSON.stringify({ number: number, password: password }),
@@ -28,11 +28,10 @@ export default function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.value) {
           setLoggedIn(true);
         } else {
-          console.log(data.reason);
+          callback(data.reason);
         }
       });
   }
@@ -47,7 +46,7 @@ export default function App() {
       ) : (
         <div className="contents">
           {loggedIn ? (
-            <CourseAdder />
+            <CourseAdder setLoggedIn={setLoggedIn} />
           ) : creatingAccount ? (
             <CreateAccountForm
               number={number}

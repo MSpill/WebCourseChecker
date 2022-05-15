@@ -3,7 +3,7 @@ export default function AddCourseForm() {
     <div>
       <form>
         <label>CRN</label>
-        <input type="text" />
+        <input className="form-input" type="text" />
       </form>
     </div>
   );

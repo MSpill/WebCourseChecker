@@ -41,7 +41,7 @@ export default function LoginForm({
 
   function submitPassword(e) {
     e.preventDefault();
-    login(password);
+    login(password, (reason) => setAlertText(reason));
   }
 
   return (
@@ -55,7 +55,12 @@ export default function LoginForm({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <input type="submit" />
+          <input
+            className="btn"
+            type="submit"
+            value="Login"
+            style={{ backgroundColor: "green" }}
+          />
         </form>
       ) : (
         <form onSubmit={submitNumber}>

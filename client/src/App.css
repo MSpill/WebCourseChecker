@@ -61,3 +61,26 @@ form {
   margin: 20px 5px;
   padding: 20px;
 }
+
+.adderContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.addHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.course {
+  background-color: #f0f0f0;
+  padding: 10px 15px;
+  margin: 10px 0px 10px 10px;
+}
+
+.course > h3,
+p {
+  margin: 0px;
+}
