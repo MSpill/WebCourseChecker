@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function AddCourseForm() {
+export default function AddCourseForm({ addCourse }) {
   const [CRN, setCRN] = useState("");
   const [name, setName] = useState("");
 
@@ -38,6 +38,10 @@ export default function AddCourseForm() {
         <button
           className="btn"
           style={{ backgroundColor: "green", maxWidth: "200px" }}
+          onClick={(e) => {
+            e.preventDefault();
+            addCourse(CRN, name);
+          }}
         >
           Add Course
         </button>

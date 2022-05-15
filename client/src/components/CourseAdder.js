@@ -31,6 +31,23 @@ export default function CourseAdder({ setLoggedIn }) {
       });
   }
 
+  function addCourse(CRN, name) {
+    if (courses.filter((course) => course.CRN === CRN).length !== 0) {
+      return;
+    }
+    fetch("/addCourse", {
+      method: "POST",
+      body: JSON.stringify({ CRN: CRN, name: name }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.value) {
+          setCourses(courses.concat([{ CRN: CRN, name: name }]));
+        }
+      });
+  }
+
   function logout() {
     fetch("/logout", {
       method: "POST",
@@ -41,7 +58,7 @@ export default function CourseAdder({ setLoggedIn }) {
   return (
     <div className="adderContainer">
       <AdderHeader formOpen={formOpen} setFormOpen={setFormOpen} />
-      {formOpen ? <AddCourseForm /> : <></>}
+      {formOpen ? <AddCourseForm addCourse={addCourse} /> : <></>}
       <CourseList courses={courses} deleteCourse={deleteCourse} />
       <button onClick={logout} className="btn">
         Logout

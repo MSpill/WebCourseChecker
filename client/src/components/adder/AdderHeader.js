@@ -7,7 +7,7 @@ export default function AdderHeader({ formOpen, setFormOpen }) {
         style={{ backgroundColor: formOpen ? "red" : "green" }}
         onClick={() => setFormOpen(!formOpen)}
       >
-        {formOpen ? "Cancel" : "Add"}
+        {formOpen ? "Close" : "Add"}
       </button>
     </div>
   );
