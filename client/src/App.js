@@ -29,6 +29,7 @@ export default function App() {
       .then((data) => {
         if (data.value) {
           setLoggedIn(true);
+          setCreatingAccount(false);
         } else {
           errorCallback(data.reason);
         }

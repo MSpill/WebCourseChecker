@@ -48,8 +48,8 @@ exports.setHasAccount = async function (number, value) {
   );
 };
 
-exports.createAccount = async function (number, hash) {
-  return await accounts.insertOne({ number: number, hash: hash });
+exports.createAccount = async function (number, hash, major) {
+  return await accounts.insertOne({ number: number, hash: hash, major: major });
 };
 
 exports.getAccount = async function (number) {

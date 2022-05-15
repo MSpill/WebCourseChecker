@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function CreateAccountForm({ number, login }) {
+  const [major, setMajor] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [alertText, setAlertText] = useState("");
+  const [majors, setMajors] = useState([]);
+
+  useEffect(() => {
+    fetch("majors.txt")
+      .then((val) => val.text())
+      .then((data) => setMajors(data.split("\n").map((str) => str.trimEnd())));
+  }, []);
 
   function createAccount(e) {
     e.preventDefault();
@@ -13,7 +21,11 @@ export default function CreateAccountForm({ number, login }) {
     }
     fetch("/createAccount", {
       method: "POST",
-      body: JSON.stringify({ number: number, password: password }),
+      body: JSON.stringify({
+        number: number,
+        password: password,
+        major: major,
+      }),
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
@@ -37,9 +49,21 @@ export default function CreateAccountForm({ number, login }) {
 
   return (
     <div>
-      <h2>Create Password</h2>
-      <p>This will be used to access the system from now on.</p>
+      <h2 style={{ marginBottom: "0px" }}>Create Account</h2>
+      <p style={{ marginBottom: "20px" }}>
+        This information will be used to access the system from now on.
+      </p>
       <form onSubmit={createAccount}>
+        <label>Major</label>
+        <select
+          className="form-input"
+          value={major}
+          onChange={(e) => setMajor(e.target.value)}
+        >
+          {majors.map((val) => (
+            <option>{val}</option>
+          ))}
+        </select>
         <label>Password</label>
         <input
           type="text"

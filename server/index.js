@@ -79,7 +79,7 @@ app.post("/createAccount", (req, res) => {
       }
     })
     .then(() => passwords.saltAndHash(req.body.password))
-    .then((hash) => db.createAccount(req.body.number, hash))
+    .then((hash) => db.createAccount(req.body.number, hash, req.body.major))
     .then(() => res.json({ value: true }))
     .catch((reason) => res.json({ value: false, reason: reason }));
 });

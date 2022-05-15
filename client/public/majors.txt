@@ -1,0 +1,37 @@
+Aerospace Engineering                       
+Applied Lang & Intercult Studies            
+Applied Physics                             
+Architecture                                
+Biochemistry                                
+Biology                                     
+Biomedical Engineering                      
+Building Construction                       
+Business Administration                     
+Chemical and Biomolecular Eng.              
+Chemistry                                   
+Civil Engineering                           
+Computational Media                         
+Computer Engineering                        
+Computer Science                            
+Discrete Mathematics                        
+Earth and Atmospheric Sciences              
+Econ & Int'l Affairs                        
+Economics                                   
+Electrical Engineering                      
+Environmental Engineering                   
+Global Econ/Mod Lang                        
+History, Technology & Society               
+Industrial Design                           
+Industrial Engineering                      
+Int'l Affairs and Modern Lang               
+International Affairs                       
+Literature, Media & Communication           
+Materials Science & Engr                    
+Mathematics                                 
+Mechanical Engineering                      
+Music Technology                            
+Neuroscience                                
+Nuclear and Radiological Eng                
+Physics                                     
+Psychology                                  
+Public Policy
