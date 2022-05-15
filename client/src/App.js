@@ -9,18 +9,17 @@ export default function App() {
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [number, setNumber] = useState("");
 
+  // check whether the session is logged in on page load
   useEffect(() => {
-    if (loggedIn === undefined) {
-      fetch("/checkLogin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((res) => res.json())
-        .then((data) => setLoggedIn(data.value));
-    }
-  });
+    fetch("/checkLogin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((data) => setLoggedIn(data.value));
+  }, []);
 
-  function login(password, callback) {
+  function login(password, errorCallback) {
     fetch("/login", {
       method: "POST",
       body: JSON.stringify({ number: number, password: password }),
@@ -31,7 +30,7 @@ export default function App() {
         if (data.value) {
           setLoggedIn(true);
         } else {
-          callback(data.reason);
+          errorCallback(data.reason);
         }
       });
   }

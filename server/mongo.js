@@ -25,11 +25,18 @@ async function connect() {
   await client.db("admin").command({ ping: 1 });
   console.log("Connected successfully to database");
 }
-connect().catch((err) => console.log(err));
+connect()
+  .then(() => {
+    exports.addCourse("Joshua", 87654, "Class 1");
+  })
+  .catch((err) => console.log(err));
 
 // functions to edit/read important information from the database
+const accounts = client.db("testDB").collection("Accounts");
+const courses = client.db("testDB").collection("Courses");
+const numberdb = client.db("testDB").collection("Numbers");
+
 exports.hasAccount = async function (number) {
-  const numberdb = client.db("testDB").collection("Numbers");
   const record = await numberdb.findOne({ number: number });
   let result = "no record";
   if (record && record.hasAccount !== undefined) {
@@ -39,7 +46,6 @@ exports.hasAccount = async function (number) {
 };
 
 exports.setHasAccount = async function (number, value) {
-  const numberdb = client.db("testDB").collection("Numbers");
   return await numberdb.updateOne(
     { number: number },
     { $set: { hasAccount: value } }
@@ -47,11 +53,39 @@ exports.setHasAccount = async function (number, value) {
 };
 
 exports.createAccount = async function (number, hash) {
-  const accounts = client.db("testDB").collection("Accounts");
   return await accounts.insertOne({ number: number, hash: hash });
 };
 
 exports.getAccount = async function (number) {
-  const accounts = client.db("testDB").collection("Accounts");
   return await accounts.findOne({ number: number });
+};
+
+exports.getCourses = async function (number) {
+  return await courses.find({ numbers: number }).sort({ CRN: 1 }).toArray();
+};
+
+// signs a person up for a course by either adding it to the database or
+// appending the given number to that course's number list if it's already in the database
+exports.addCourse = async function (number, crn, name) {
+  const courseInDb = await courses.findOne({ CRN: crn });
+  if (courseInDb) {
+    let newNumbers = courseInDb.numbers.concat(number);
+    courses.updateOne({ CRN: crn }, [{ $set: { numbers: newNumbers } }]);
+  } else {
+    courses.insertOne({
+      CRN: crn,
+      name: name,
+      numbers: [number],
+    });
+  }
+};
+
+exports.removeCourse = async function (number, crn) {
+  const courseInDb = await courses.findOne({ CRN: crn });
+  if (courseInDb.numbers.length === 1) {
+    courses.deleteOne({ CRN: crn });
+  } else {
+    let newNumbers = courseInDb.numbers.filter((val) => val !== number);
+    courses.updateOne({ CRN: crn }, [{ $set: { numbers: newNumbers } }]);
+  }
 };

@@ -29,6 +29,7 @@ app.post("/login", (req, res) => {
     .then((success) => {
       if (success) {
         req.session.loggedIn = true;
+        req.session.number = req.body.number;
         res.json({ value: true });
       } else {
         res.json({ value: false, reason: "Incorrect password." });
@@ -78,6 +79,22 @@ app.post("/createAccount", (req, res) => {
     .then((hash) => db.createAccount(req.body.number, hash))
     .then(() => res.json({ value: true }))
     .catch((reason) => res.json({ value: false, reason: reason }));
+});
+
+app.post("/getCourses", (req, res) => {
+  db.getCourses(req.session.number).then((value) => res.json(value));
+});
+
+app.post("/addCourse", (req, res) => {
+  db.addCourse(req.session.number, req.body.CRN, req.body.name)
+    .then(() => res.json({ value: true }))
+    .catch((err) => res.json({ value: false, reson: err }));
+});
+
+app.post("/removeCourse", (req, res) => {
+  db.removeCourse(req.session.number, req.body.CRN)
+    .then(() => res.json({ value: true }))
+    .catch((err) => res.json({ value: false, reson: err }));
 });
 
 app.listen(PORT, () => {

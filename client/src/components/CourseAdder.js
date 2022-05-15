@@ -1,21 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddCourseForm from "./adder/AddCourseForm";
 import AdderHeader from "./adder/AdderHeader";
 import CourseList from "./adder/CourseList";
 
 export default function CourseAdder({ setLoggedIn }) {
   const [formOpen, setFormOpen] = useState(false);
+  const [courses, setCourses] = useState([]);
 
-  const courses = [
-    {
-      name: "Computer Org & Program - Sec A01 Plus some other stuff",
-      CRN: 123,
-    },
-    {
-      name: "MAMA",
-      CRN: 145,
-    },
-  ];
+  function updateCourses() {
+    fetch("/getCourses", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setCourses(data);
+      });
+  }
+
+  useEffect(updateCourses, []);
 
   function logout() {
     fetch("/logout", {
