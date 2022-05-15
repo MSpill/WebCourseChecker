@@ -76,11 +76,48 @@ form {
 
 .course {
   background-color: #f0f0f0;
-  padding: 10px 15px;
+  padding: 15px;
   margin: 10px 0px 10px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.course > h3,
+.courseText {
+  display: flex;
+  flex-direction: column;
+}
+
+.courseText > h3,
 p {
   margin: 0px;
+}
+
+.toggleGroup {
+  display: flex;
+  flex-direction: row;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.toggleGroupButton {
+  margin: 0px;
+  min-width: 30px;
+  padding: 3px 10px;
+  background-color: white;
+  outline: 1px solid gray;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.toggleGroupButton:hover {
+  filter: brightness(95%);
+}
+
+.toggleGroupButton > label {
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
 }
