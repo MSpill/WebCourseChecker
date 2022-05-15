@@ -13,13 +13,23 @@ export default function CourseAdder({ setLoggedIn }) {
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
+      .then((data) => setCourses(data));
+  }
+  useEffect(updateCourses, []);
+
+  function deleteCourse(CRN) {
+    fetch("/removeCourse", {
+      method: "POST",
+      body: JSON.stringify({ CRN: CRN }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        setCourses(data);
+        if (data.value) {
+          setCourses(courses.filter((course) => course.CRN !== CRN));
+        }
       });
   }
-
-  useEffect(updateCourses, []);
 
   function logout() {
     fetch("/logout", {
@@ -32,7 +42,7 @@ export default function CourseAdder({ setLoggedIn }) {
     <div className="adderContainer">
       <AdderHeader formOpen={formOpen} setFormOpen={setFormOpen} />
       {formOpen ? <AddCourseForm /> : <></>}
-      <CourseList courses={courses} />
+      <CourseList courses={courses} deleteCourse={deleteCourse} />
       <button onClick={logout} className="btn">
         Logout
       </button>

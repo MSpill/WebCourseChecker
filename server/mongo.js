@@ -25,11 +25,7 @@ async function connect() {
   await client.db("admin").command({ ping: 1 });
   console.log("Connected successfully to database");
 }
-connect()
-  .then(() => {
-    exports.addCourse("Joshua", 87654, "Class 1");
-  })
-  .catch((err) => console.log(err));
+connect().catch((err) => console.log(err));
 
 // functions to edit/read important information from the database
 const accounts = client.db("testDB").collection("Accounts");
@@ -64,8 +60,6 @@ exports.getCourses = async function (number) {
   return await courses.find({ numbers: number }).sort({ CRN: 1 }).toArray();
 };
 
-// signs a person up for a course by either adding it to the database or
-// appending the given number to that course's number list if it's already in the database
 exports.addCourse = async function (number, crn, name) {
   const courseInDb = await courses.findOne({ CRN: crn });
   if (courseInDb) {

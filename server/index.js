@@ -2,6 +2,9 @@ const express = require("express");
 const session = require("express-session");
 const db = require("./mongo");
 const passwords = require("./passwords");
+const lookupCourseName = require("./lookupCourseName").lookupCourseName;
+
+// pretty much everywhere the word "number" appears in this project, it's referring to a phone number
 
 // general setup
 const app = express();
@@ -95,6 +98,12 @@ app.post("/removeCourse", (req, res) => {
   db.removeCourse(req.session.number, req.body.CRN)
     .then(() => res.json({ value: true }))
     .catch((err) => res.json({ value: false, reson: err }));
+});
+
+app.post("/getCourseName", (req, res) => {
+  lookupCourseName(req.body.CRN)
+    .then((result) => res.json({ value: result }))
+    .catch(() => res.json({ value: "No course associated with this CRN" }));
 });
 
 app.listen(PORT, () => {

@@ -19,7 +19,7 @@ body {
   margin: auto;
   max-width: 500px;
   min-height: 300px;
-  margin: 170px auto;
+  margin: 150px auto;
 }
 
 form {
@@ -80,6 +80,7 @@ form {
   margin: 10px 0px 10px 10px;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -123,4 +124,16 @@ p {
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
+}
+
+.addCourseForm {
+  /* border: 1px solid steelblue; */
+  border-radius: 5px;
+  padding: 10px 15px 20px 15px;
+}
+
+.courseName {
+  margin-bottom: 20px;
+  margin-top: 3px;
+  font-size: 12px;
 }
