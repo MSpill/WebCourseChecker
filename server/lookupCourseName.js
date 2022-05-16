@@ -2,8 +2,8 @@ const fetch = require("node-fetch");
 
 const url = (term, CRN) =>
   `https://oscar.gatech.edu/bprod/bwckschd.p_disp_detail_sched?term_in=${term}&crn_in=${CRN}`;
-async function lookupCourseName(CRN) {
-  const data = await fetch(url("202208", CRN), {
+async function lookupCourseName(term, CRN) {
+  const data = await fetch(url(term, CRN), {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "User-Agent":

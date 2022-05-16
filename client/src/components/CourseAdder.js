@@ -6,6 +6,13 @@ import CourseList from "./adder/CourseList";
 export default function CourseAdder({ setLoggedIn }) {
   const [formOpen, setFormOpen] = useState(false);
   const [courses, setCourses] = useState([]);
+  const [terms, setTerms] = useState("");
+
+  useEffect(() => {
+    fetch("terms.json")
+      .then((res) => res.json())
+      .then((data) => setTerms(data));
+  }, []);
 
   function updateCourses() {
     fetch("/getCourses", {
@@ -31,13 +38,13 @@ export default function CourseAdder({ setLoggedIn }) {
       });
   }
 
-  function addCourse(CRN, name) {
-    if (courses.filter((course) => course.CRN === CRN).length !== 0) {
+  function addCourse(term, CRN, name) {
+    if (courses.filter((course) => course.CRN === CRN).length !== 0 || !name) {
       return;
     }
     fetch("/addCourse", {
       method: "POST",
-      body: JSON.stringify({ CRN: CRN, name: name }),
+      body: JSON.stringify({ term: term, CRN: CRN, name: name }),
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
@@ -58,7 +65,7 @@ export default function CourseAdder({ setLoggedIn }) {
   return (
     <div className="adderContainer">
       <AdderHeader formOpen={formOpen} setFormOpen={setFormOpen} />
-      {formOpen ? <AddCourseForm addCourse={addCourse} /> : <></>}
+      {formOpen ? <AddCourseForm addCourse={addCourse} terms={terms} /> : <></>}
       <CourseList courses={courses} deleteCourse={deleteCourse} />
       <button onClick={logout} className="btn">
         Logout

@@ -10,7 +10,11 @@ export default function CreateAccountForm({ number, login }) {
   useEffect(() => {
     fetch("majors.txt")
       .then((val) => val.text())
-      .then((data) => setMajors(data.split("\n").map((str) => str.trimEnd())));
+      .then((data) => {
+        const newMajors = data.split("\n").map((str) => str.trimEnd());
+        setMajors(newMajors);
+        setMajor(newMajors[0]);
+      });
   }, []);
 
   function createAccount(e) {
@@ -60,8 +64,8 @@ export default function CreateAccountForm({ number, login }) {
           value={major}
           onChange={(e) => setMajor(e.target.value)}
         >
-          {majors.map((val) => (
-            <option>{val}</option>
+          {majors.map((val, index) => (
+            <option key={index}>{val}</option>
           ))}
         </select>
         <label>Password</label>

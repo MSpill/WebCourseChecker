@@ -57,19 +57,26 @@ exports.getAccount = async function (number) {
 };
 
 exports.getCourses = async function (number) {
-  return await courses.find({ numbers: number }).sort({ CRN: 1 }).toArray();
+  return await courses
+    .find({ numbers: { $elemMatch: { number: number } } })
+    .sort({ CRN: 1 })
+    .toArray();
 };
 
-exports.addCourse = async function (number, crn, name) {
+exports.addCourse = async function (number, major, term, crn, name) {
   const courseInDb = await courses.findOne({ CRN: crn });
   if (courseInDb) {
-    let newNumbers = courseInDb.numbers.concat(number);
+    let newNumbers = courseInDb.numbers.concat({
+      number: number,
+      major: major,
+    });
     courses.updateOne({ CRN: crn }, [{ $set: { numbers: newNumbers } }]);
   } else {
     courses.insertOne({
+      term: term,
       CRN: crn,
       name: name,
-      numbers: [number],
+      numbers: [{ number: number, major: major }],
     });
   }
 };
@@ -79,7 +86,7 @@ exports.removeCourse = async function (number, crn) {
   if (courseInDb.numbers.length === 1) {
     courses.deleteOne({ CRN: crn });
   } else {
-    let newNumbers = courseInDb.numbers.filter((val) => val !== number);
+    let newNumbers = courseInDb.numbers.filter((val) => val.number !== number);
     courses.updateOne({ CRN: crn }, [{ $set: { numbers: newNumbers } }]);
   }
 };

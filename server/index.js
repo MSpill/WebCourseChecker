@@ -27,12 +27,17 @@ app.use(
 // if the credentials are correct, sets the user's session loggedIn to true
 // returns whether the login succeeded as JSON
 app.post("/login", (req, res) => {
+  let major = null;
   db.getAccount(req.body.number)
-    .then((acct) => passwords.compare(req.body.password, acct.hash))
+    .then((acct) => {
+      major = acct.major;
+      return passwords.compare(req.body.password, acct.hash);
+    })
     .then((success) => {
       if (success) {
         req.session.loggedIn = true;
         req.session.number = req.body.number;
+        req.session.major = major;
         res.json({ value: true });
       } else {
         res.json({ value: false, reason: "Incorrect password." });
@@ -89,7 +94,13 @@ app.post("/getCourses", (req, res) => {
 });
 
 app.post("/addCourse", (req, res) => {
-  db.addCourse(req.session.number, req.body.CRN, req.body.name)
+  db.addCourse(
+    req.session.number,
+    req.session.major,
+    req.body.term,
+    req.body.CRN,
+    req.body.name
+  )
     .then(() => res.json({ value: true }))
     .catch((err) => res.json({ value: false, reson: err }));
 });
@@ -101,9 +112,9 @@ app.post("/removeCourse", (req, res) => {
 });
 
 app.post("/getCourseName", (req, res) => {
-  lookupCourseName(req.body.CRN)
+  lookupCourseName(req.body.term, req.body.CRN)
     .then((result) => res.json({ value: result }))
-    .catch(() => res.json({ value: "No course associated with this CRN" }));
+    .catch(() => res.json({ value: null }));
 });
 
 app.listen(PORT, () => {
