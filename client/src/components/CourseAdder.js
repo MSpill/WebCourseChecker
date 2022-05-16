@@ -67,7 +67,11 @@ export default function CourseAdder({ setLoggedIn }) {
       <AdderHeader formOpen={formOpen} setFormOpen={setFormOpen} />
       {formOpen ? <AddCourseForm addCourse={addCourse} terms={terms} /> : <></>}
       <CourseList courses={courses} deleteCourse={deleteCourse} />
-      <button onClick={logout} className="btn">
+      <button
+        onClick={logout}
+        className="btn"
+        style={{ backgroundColor: "gray" }}
+      >
         Logout
       </button>
     </div>

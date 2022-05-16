@@ -1,4 +1,6 @@
 import { useState } from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export default function LoginForm({
   number,
@@ -61,15 +63,39 @@ export default function LoginForm({
             value="Login"
             style={{ backgroundColor: "green" }}
           />
+          <button
+            className="btn"
+            value="Back"
+            style={{ backgroundColor: "gray" }}
+            onClick={() => setEnterPassword(false)}
+          >
+            Back
+          </button>
         </form>
       ) : (
         <form onSubmit={submitNumber}>
           <label>Phone Number</label>
-          <input
-            type="text"
-            className="form-input"
+          <PhoneInput
+            countryCodeEditable={false}
+            prefix="+"
+            onChange={(val) => setNumber("+" + val)}
             value={number}
-            onChange={(e) => setNumber(e.target.value)}
+            country="us"
+            containerStyle={{
+              minHeight: "30px",
+              margin: "5px 10px 20px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              width: "auto",
+            }}
+            inputStyle={{
+              //padding: "0px 5px",
+              fontSize: "16px",
+              fontFamily: "inherit",
+              width: "auto",
+            }}
+            placeholder={"Enter phone number"}
           />
           <input
             className="btn"
