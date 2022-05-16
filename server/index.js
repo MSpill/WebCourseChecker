@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const session = require("express-session");
 const db = require("./mongo");
 const passwords = require("./passwords");
@@ -10,6 +11,8 @@ const lookupCourseName = require("./lookupCourseName").lookupCourseName;
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, "../client/build")));
 app.use(express.json());
 app.use(
   session({
@@ -115,6 +118,11 @@ app.post("/getCourseName", (req, res) => {
   lookupCourseName(req.body.term, req.body.CRN)
     .then((result) => res.json({ value: result }))
     .catch(() => res.json({ value: null }));
+});
+
+// All other GET requests not handled before will return our React app
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
 
 app.listen(PORT, () => {
