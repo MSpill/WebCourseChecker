@@ -67,7 +67,10 @@ export default function LoginForm({
             className="btn"
             value="Back"
             style={{ backgroundColor: "gray" }}
-            onClick={() => setEnterPassword(false)}
+            onClick={() => {
+              setEnterPassword(false);
+              setAlertText("");
+            }}
           >
             Back
           </button>
