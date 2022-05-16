@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export default function AddCourseForm({ addCourse, terms }) {
   const [term, setTerm] = useState(Object.entries(terms)[0][1]);
   const [CRN, setCRN] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(" ");
 
   function checkCRN(term, CRN) {
     setCRN(CRN);
@@ -47,7 +47,7 @@ export default function AddCourseForm({ addCourse, terms }) {
           type="text"
           value={CRN}
           style={{ marginBottom: "0px" }}
-          onChange={(e) => checkCRN(term, e.target.value)}
+          onChange={(e) => checkCRN(term, e.target.value.slice(0, 5))}
         />
         <label className="courseName">
           {name ? name : "No course is associated with this CRN."}
